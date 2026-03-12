@@ -1,3 +1,5 @@
+import 'package:calculadora_alunos/enums/operation_type.dart';
+import 'package:calculadora_alunos/widgets/buttom_widgets.dart';
 import 'package:flutter/material.dart';
 
 class CalculadoraPage extends StatefulWidget {
@@ -8,12 +10,52 @@ class CalculadoraPage extends StatefulWidget {
 }
 
 class _CalculadoraPageState extends State<CalculadoraPage> {
+  late String displaynumber;
+
+  @override
+  void initState() {
+    displaynumber = '0';
+    super.initState();
+  }
+
+  void setOperationType(OperationTypeEnum newType) {
+    setState(() {
+      displaynumber += newType.symbol;
+    });
+  }
+
+  void clearCalculator(){
+    setState(() {
+      displaynumber = "0";
+    });
+  }
+
+  void appendNumber(String stringNumber){
+    setState(() {
+      if(displaynumber == '0'){
+        displaynumber = stringNumber;
+      }else{
+        displaynumber += stringNumber;
+      }
+    });
+  }
+
+  void removeNumber(){
+    setState(() {
+      if(displaynumber.length <=1){
+        displaynumber = "0";
+      } else{
+        displaynumber = displaynumber.substring(0, displaynumber.length-1);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text ("calculadora"), 
-        backgroundColor: Colors.cyan,
+        title: Text("Calculadora"),
+        backgroundColor: Colors.lightBlue,
       ),
       body: Column(
         children: [
@@ -23,18 +65,119 @@ class _CalculadoraPageState extends State<CalculadoraPage> {
             color: Colors.black12,
             child: Align(
               alignment: Alignment.bottomRight,
-              child: Text("0",style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold))
+              child: Text(
+                displaynumber,
+                style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
-          SizedBox(height: 20,),
+          SizedBox(height: 20),
           Column(
             children: [
-            Row(),
+              Row(
+                children: [
+                  ButtomWidgets(text: "C", onPressed: () {
+                    clearCalculator();
+                  }, color: Colors.red),
+                  ButtomWidgets(
+                    text: "\u232b",
+                    onPressed: () {
+                      removeNumber();
+                    },
+                    color: Colors.orange,
+                  ),
+                  ButtomWidgets(
+                    text: "÷",
+                    onPressed: () {
+                      setOperationType(OperationTypeEnum.division);
+                    },
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  ButtomWidgets(text: "7", onPressed: () {
+                    appendNumber('7');
+                  }),
+                  ButtomWidgets(text: "8", onPressed: () {
+                    appendNumber('8');
+                  }),
+                  ButtomWidgets(text: "9", onPressed: () {
+                    appendNumber('9');
+                  }),
+                  ButtomWidgets(
+                    text: "x",
+                    onPressed: () {
+                      setOperationType(OperationTypeEnum.multiplication);
+                    },
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  ButtomWidgets(text: "4", onPressed: () {
+                    appendNumber('4');
+                  }),
+                  ButtomWidgets(text: "5", onPressed: () {
+                    appendNumber('5');
+                  }),
+                  ButtomWidgets(text: "6", onPressed: () {
+                    appendNumber('6');
+                  }),
+                  ButtomWidgets(
+                    text: "-",
+                    onPressed: () {
+                      setOperationType(OperationTypeEnum.subtraction);
+                    },
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  ButtomWidgets(text: "1", onPressed: () {
+                    appendNumber('1');
+                  }),
+                  ButtomWidgets(text: "2", onPressed: () {
+                    appendNumber('2');
+                  }),
+                  ButtomWidgets(text: "3", onPressed: () {
+                    appendNumber('3');
+                  }),
+                  ButtomWidgets(
+                    text: "+",
+                    onPressed: () {
+                      setOperationType(OperationTypeEnum.addition);
+                    },
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  ButtomWidgets(text: '0', onPressed: () {
+                    appendNumber('0');
+                  }),
+                  ButtomWidgets(text: ",", onPressed: () {
+                    appendNumber(',');
+                  }),
+                  ButtomWidgets(
+                    text: "=",
+                    onPressed: () {},
+                    color: Colors.green,
+                  ),
+                ],
+              ),
             ],
           ),
-
         ],
-      )
+      ),
     );
   }
 }
